@@ -24,6 +24,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'ckeditor',
+
     'users',
     'main',
     'blog',
@@ -111,9 +114,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / 'static' # /home/napax/fsp_3_22/shop1/static/
 
-STATICFILES_DIRS = BASE_DIR / 'assets',
+
+STATICFILES_DIRS = BASE_DIR / 'assets', #/home/napax/fsp_3_22/shop1/assets/
 
 MEDIA_URL = 'media/'
 
@@ -125,6 +129,14 @@ AUTH_USER_MODEL = 'users.UserModel'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+    },
+}
 
 try:
     from .local_settings import *

@@ -3,6 +3,9 @@ from django.views.generic import TemplateView, CreateView
 from .models import ContactModel
 
 
+class AboutUsView(TemplateView):
+    template_name = 'main/about.html'
+
 class ContactView(CreateView):
     model = ContactModel
     fields = ['name', 'email', 'message']
