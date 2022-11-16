@@ -13,7 +13,7 @@
                         <ul>
                             <li>By {{ object.author.get_fullname }}</li>
                             <li>{{ object.created_at|date:'F d Y' }}</li>
-                            <li>8 Comments</li>
+                            <li>{{ comments.count }} Comments</li>
                         </ul>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="blog__details__tags">
                                         {% for tag in object.tags.all %}
-                                            <a href="#">#{{ tag.name }}</a>
+                                            <a href="{% url 'blog:blog-list' %}?tag={{ tag.pk }}">#{{ tag.name }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -90,21 +90,36 @@
                                 {% endif %}
                             </div>
                         </div>
+                        <div class="container">
+                            <div class="row">
+                                {% for comment in comments %}
+                                    <div class="col-12">
+                                        <hr>
+                                        <div class="d-flex justify-content-between"><strong>{{ comment.name }}</strong> <span>{{ comment.created_at|timesince }}</span></div>
+                                        <p>
+                                            {{ comment.comment }}
+                                        </p>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
                         <div class="blog__details__comment">
                             <h4>Leave A Comment</h4>
-                            <form action="#">
+                            <form action="{% url 'blog:comment' pk=object.pk %}" method="post">
+                                {% csrf_token %}
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Name">
+                                        <input type="text" placeholder="Name" name="name">
                                     </div>
                                     <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Email">
+                                        <input type="text" placeholder="Email" name="email">
                                     </div>
                                     <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Phone">
+                                        <input type="text" placeholder="Phone" name="phone">
                                     </div>
                                     <div class="col-lg-12 text-center">
-                                        <textarea placeholder="Comment"></textarea>
+                                        <textarea placeholder="Comment" name="comment"></textarea>
                                         <button type="submit" class="site-btn">Post Comment</button>
                                     </div>
                                 </div>
