@@ -1,5 +1,5 @@
 {% extends 'layouts/base.html' %}
-{% load static %}
+{% load static my_tags %}
 {% block content %}
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-option">
@@ -111,4 +111,32 @@
         </div>
     </section>
     <!-- Shop Section End -->
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        {% get_price request as price %}
+        $(".js-range-slider").ionRangeSlider({
+            type: "double",
+            grid: true,
+            min: {{ min }},
+            max: {{ max }},
+            from: {{ price.0|default:'null' }},
+            to: {{ price.1|default:'null' }},
+            prefix: "$",
+            onFinish: function (data) {
+                addParam('price', data.from.toString() + ";" + data.to.toString())
+            }
+        });
+
+        function addParam(name, value) {
+            var param = new URLSearchParams(window.location.search)
+            if (param.has(name) && param.get(name) == value) {
+                param.delete(name)
+            } else {
+                param.set(name, value)
+            }
+            window.location.search = param.toString()
+        }
+    </script>
 {% endblock %}

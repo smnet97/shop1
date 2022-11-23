@@ -65,6 +65,7 @@ class ProductModel(models.Model):
     short_description = models.TextField(verbose_name=_('short description'))
     long_description = models.TextField(verbose_name=_('long description'))
     price = models.FloatField(verbose_name=_('price'))
+    real_price = models.FloatField(verbose_name=_('real price'), default=0)
     discount = models.PositiveIntegerField(default=0, verbose_name=_('discount'))
     category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE, verbose_name=_('category'),
                                  related_name='products')
@@ -75,12 +76,6 @@ class ProductModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    @property
-    def real_price(self):
-        if self.discount:
-            real_price = self.price - (self.discount / 100) * self.price
-            return real_price
-        return self.price
 
     @property
     def is_discount(self):

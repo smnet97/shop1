@@ -10,6 +10,7 @@ class ProductModelAdmin(admin.ModelAdmin):
     list_display_links = ['id', 'name', 'real_price']
     search_fields = ['name']
     list_filter = ['created_at']
+    readonly_fields = ['real_price']
 
 
 @admin.register(ColorModel)

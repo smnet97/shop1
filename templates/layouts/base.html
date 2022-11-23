@@ -12,7 +12,9 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
-    rel="stylesheet">
+          rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="{% static 'main/css/bootstrap.min.css' %}" type="text/css">
@@ -26,40 +28,44 @@
 </head>
 
 <body>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+{% include 'layouts/navbar.html' %}
+
+{% block content %}
+
+{% endblock %}
+
+{% include 'layouts/footer.html' %}
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form" action="{% url 'product:shop' %}" method="get">
+            <input type="text" id="search-input" value="{{ request.GET.q }}" name="q" placeholder="Search here.....">
+        </form>
     </div>
-    {% include 'layouts/navbar.html' %}
+</div>
+<!-- Search End -->
 
-    {% block content %}
+<!-- Js Plugins -->
+<script src="{% static 'main/js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'main/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'main/js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'main/js/jquery.nicescroll.min.js' %}"></script>
+<script src="{% static 'main/js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'main/js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'main/js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'main/js/mixitup.min.js' %}"></script>
+<script src="{% static 'main/js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'main/js/main.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+{% block extra_js %}
 
-    {% endblock %}
-
-    {% include 'layouts/footer.html' %}
-
-    <!-- Search Begin -->
-    <div class="search-model">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
-            </form>
-        </div>
-    </div>
-    <!-- Search End -->
-
-    <!-- Js Plugins -->
-    <script src="{% static 'main/js/jquery-3.3.1.min.js' %}"></script>
-    <script src="{% static 'main/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'main/js/jquery.nice-select.min.js' %}"></script>
-    <script src="{% static 'main/js/jquery.nicescroll.min.js' %}"></script>
-    <script src="{% static 'main/js/jquery.magnific-popup.min.js' %}"></script>
-    <script src="{% static 'main/js/jquery.countdown.min.js' %}"></script>
-    <script src="{% static 'main/js/jquery.slicknav.js' %}"></script>
-    <script src="{% static 'main/js/mixitup.min.js' %}"></script>
-    <script src="{% static 'main/js/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'main/js/main.js' %}"></script>
+{% endblock %}
 </body>
 
 </html>
