@@ -42,7 +42,7 @@
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__links">
-                            <a href="#">Sign in</a>
+                            <a href="{% url 'users:login' %}">Sign in</a>
                             <a href="#">FAQs</a>
                         </div>
                         <div class="header__top__hover">
@@ -70,7 +70,7 @@
                     <ul>
                         <li class="active"><a href="{% url 'main:home' %}">Home</a></li>
                         <li><a href="{% url 'product:shop' %}">Shop</a></li>
-                        <li><a href="{% url 'blog:blog-list' %}">Blog</a></li>
+                        <li class=""><a href="{% url 'blog:blog-list' %}">Blog</a></li>
                         <li><a href="{% url 'main:about-us' %}">About us</a></li>
                         <li><a href="{% url 'main:contact' %}">Contacts</a></li>
                     </ul>

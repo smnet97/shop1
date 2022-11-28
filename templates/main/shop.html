@@ -61,14 +61,23 @@
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg" data-setbg="{{ object.main_image.url }}">
+                                        {% if object.is_new %}
+                                            <span class="label">New</span>
+                                        {% endif %}
+                                        {% if object.is_discount %}
+                                            <span class="label {% if object.is_new %}
+                                    mt-4
+                                    {% endif %} " style="background-color: black; color: white;">Sale</span>
+                                        {% endif %}
                                         <ul class="product__hover">
                                             <li><a href="#"><img src="{% static 'main/img/icon/heart.png' %}"
                                                                  alt=""></a></li>
                                             <li><a href="#"><img src="{% static 'main/img/icon/compare.png' %}" alt="">
                                                 <span>Compare</span></a>
                                             </li>
-                                            <li><a href="#"><img src="{% static 'main/img/icon/search.png' %}"
-                                                                 alt=""></a></li>
+                                            <li><a href="{% url 'product:detail' pk=object.pk %}"><img
+                                                    src="{% static 'main/img/icon/search.png' %}"
+                                                    alt=""></a></li>
                                         </ul>
                                     </div>
                                     <div class="product__item__text">
@@ -108,21 +117,16 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="product__pagination">
-                            {% paginator_range paginator as p_range %}
-                            {{ paginator }}
-                                {% for page in p_range %}
+                                {% if not page_obj.paginator.count < 10 %}
+                                    {% paginator_range paginator as p_range %}
+                                    {% for page in p_range %}
 
-                                    <a href="?page={{ page }}" class="{% if page_obj.number == page %}
+                                        <a href="?page={{ page }}" class="{% if page_obj.number == page %}
                                     active
                                     {% endif %}">{{ page }}</a>
-                                {% endfor %}
-{#                                {{ paginator.ELLIPSIS }}#}
+                                    {% endfor %}
 
-                                {#                                <a class="active" href="#">1</a>#}
-                                {#                                <a href="#">2</a>#}
-                                {#                                <a href="#">3</a>#}
-                                {#                                <span>...</span>#}
-                                {#                                <a href="#">21</a>#}
+                                {% endif %}
                             </div>
                         </div>
                     </div>

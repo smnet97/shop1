@@ -1,13 +1,23 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from .models import ProductModel, CategoryModel, BrandModel, SizeModel, ColorModel, TagModel
 from django.db.models import Max, Min
 from django.core.paginator import Paginator
 
 
+class ProductDetailView(DetailView):
+    template_name = 'main/shop-details.html'
+    model = ProductModel
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['products'] = ProductModel.objects.all().exclude(id=self.object.id)[:4]
+        return data
+
+
 class ShopListView(ListView):
     template_name = 'main/shop.html'
-    paginate_by = 1
+    paginate_by = 9
 
     def get_queryset(self):
         qs = ProductModel.objects.all()
@@ -51,6 +61,4 @@ class ShopListView(ListView):
         data['colors'] = ColorModel.objects.all()
         data['tags'] = TagModel.objects.all()
         data['min'], data['max'] = ProductModel.objects.all().aggregate(Min('real_price'), Max('real_price')).values()
-        # p_range = Paginator(self.get_queryset(), per_page=2)
-        # print(list(p_range.get_elided_page_range(4)))
         return data

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from datetime import timedelta
+import datetime
 
 
 class TagModel(models.Model):
@@ -76,14 +77,13 @@ class ProductModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
     @property
     def is_discount(self):
         return self.discount != 0
 
-    # @property
-    # def is_new(self):
-    #     return timedelta(timezone.now().day - self.created_at.day) <= 3
+    @property
+    def is_new(self):
+        return (timezone.now() - self.created_at).days <= 3
 
     def __str__(self):
         return self.name
