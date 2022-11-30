@@ -3,6 +3,9 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from datetime import timedelta
 import datetime
+from django.db import IntegrityError
+
+from users.models import UserModel
 
 
 class TagModel(models.Model):
@@ -91,3 +94,23 @@ class ProductModel(models.Model):
     class Meta:
         verbose_name = 'product'
         verbose_name_plural = 'products'
+
+
+class WishlistModel(models.Model):
+    product = models.ForeignKey(ProductModel, on_delete=models.RESTRICT, related_name='wishlist')
+    user = models.ForeignKey(UserModel, on_delete=models.RESTRICT, related_name='wishlist')
+
+    def __str__(self):
+        return f"{self.product} {self.user}"
+
+    @staticmethod
+    def create_or_delete(user, product):
+        try:
+            WishlistModel.objects.create(user=user, product=product)
+        except IntegrityError:
+            WishlistModel.objects.get(user=user, product=product).delete()
+
+    class Meta:
+        verbose_name = _('wishlist')
+        verbose_name_plural = _('wishlists')
+        unique_together = ('user', 'product')

@@ -14,15 +14,20 @@
                                 <h3 class="text-uppercase">Login</h3>
                             </div>
                             <form action="#" method="post">
+                                {% csrf_token %}
                                 <div class="form-group first">
                                     <label for="username">Username</label>
-                                    <input type="text" class="form-control" placeholder="your-email@gmail.com"
-                                           id="username">
+                                    {{ form.username }}
+                                    {% for error in form.username.errors %}
+                                        <span style="color: red;">{{ error }}</span>
+                                    {% endfor %}
                                 </div>
                                 <div class="form-group last mb-3">
                                     <label for="password">Password</label>
-                                    <input type="password" class="form-control" placeholder="Your Password"
-                                           id="password">
+                                    {{ form.password }}
+                                    {% for error in form.password.errors %}
+                                        <span style="color: red;">{{ error }}</span>
+                                    {% endfor %}
                                 </div>
 
                                 <div class="d-sm-flex mb-5 align-items-center">

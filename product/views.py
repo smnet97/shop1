@@ -1,8 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse, redirect
 from django.views.generic import ListView, DetailView
-from .models import ProductModel, CategoryModel, BrandModel, SizeModel, ColorModel, TagModel
+from .models import ProductModel, CategoryModel, BrandModel, SizeModel, ColorModel, TagModel, WishlistModel
 from django.db.models import Max, Min
 from django.core.paginator import Paginator
+
+
+def wishlist_view(request, id):
+    product = ProductModel.objects.get(id=id)
+    WishlistModel.create_or_delete(request.user, product)
+    path = request.GET.get('path', '')
+    return redirect(path)
 
 
 class ProductDetailView(DetailView):

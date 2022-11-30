@@ -70,11 +70,21 @@
                                     {% endif %} " style="background-color: black; color: white;">Sale</span>
                                         {% endif %}
                                         <ul class="product__hover">
-                                            <li><a href="#"><img src="{% static 'main/img/icon/heart.png' %}"
-                                                                 alt=""></a></li>
-                                            <li><a href="#"><img src="{% static 'main/img/icon/compare.png' %}" alt="">
-                                                <span>Compare</span></a>
-                                            </li>
+                                            {% is_wishlist request object.id as obj %}
+                                            {% if request.user.is_authenticated %}
+                                                {% if obj %}
+                                                    <li>
+                                                        <a href="{% url 'product:wishlist' object.id %}?path={{ request.path }}"><img
+                                                                src="{% static 'main/img/heart.png' %}"
+                                                                alt=""></a></li>
+                                                {% else %}
+                                                    <li>
+                                                        <a href="{% url 'product:wishlist' object.id %}?path={{ request.path }}"><img
+                                                                src="{% static 'main/img/icon/heart.png' %}"
+                                                                alt=""></a></li>
+                                                {% endif %}
+                                            {% endif %}
+
                                             <li><a href="{% url 'product:detail' pk=object.pk %}"><img
                                                     src="{% static 'main/img/icon/search.png' %}"
                                                     alt=""></a></li>
@@ -98,15 +108,11 @@
                                         {% endif %}
                                         </h5>
                                         <div class="product__color__select">
-                                            <label for="pc-4">
-                                                <input type="radio" id="pc-4">
-                                            </label>
-                                            <label class="active black" for="pc-5">
-                                                <input type="radio" id="pc-5">
-                                            </label>
-                                            <label class="grey" for="pc-6">
-                                                <input type="radio" id="pc-6">
-                                            </label>
+                                            {% for color in object.color.all %}
+                                                <label for="pc-4" style="background-color: {{ color.code }}">
+                                                    <input type="radio" id="pc-4">
+                                                </label>
+                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div>
