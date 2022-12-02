@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from datetime import timedelta
@@ -79,6 +80,12 @@ class ProductModel(models.Model):
     brand = models.ForeignKey(BrandModel, on_delete=models.CASCADE, verbose_name=_('brand'), related_name='products')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @staticmethod
+    def get_cart_objects(cart_list):
+        # [2, 1, 3]
+        qs = ProductModel.objects.all().filter(id__in=cart_list)
+        return qs
 
     @property
     def is_discount(self):

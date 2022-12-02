@@ -5,6 +5,40 @@ from django.db.models import Max, Min
 from django.core.paginator import Paginator
 
 
+class ShoppingCartView(ListView):
+    template_name = 'main/shopping-cart.html'
+
+    def get_queryset(self):
+        cart = self.request.session.get('cart', [])
+        qs = ProductModel.get_cart_objects(cart)
+        return qs
+
+
+def cart_view(request, id):
+    cart = request.session.get('cart', [])
+    if not cart:
+        request.session['cart'] = []
+        cart = request.session.get('cart', [])
+
+    if id in cart:
+        cart.remove(id)
+    else:
+        cart.append(id)
+
+    request.session['cart'] = cart
+    path = request.GET.get('next', '/')
+    return redirect(path)
+
+
+class WishlistView(ListView):
+    template_name = 'main/wishlist.html'
+    paginate_by = 12
+
+    def get_queryset(self):
+        qs = WishlistModel.objects.all().filter(user=self.request.user)
+        return qs
+
+
 def wishlist_view(request, id):
     product = ProductModel.objects.get(id=id)
     WishlistModel.create_or_delete(request.user, product)

@@ -10,7 +10,7 @@
                         <h4>Shop</h4>
                         <div class="breadcrumb__links">
                             <a href="{% url 'main:home' %}">Home</a>
-                            <span>Shop</span>
+                            <span>Wishlist</span>
                         </div>
                     </div>
                 </div>
@@ -23,10 +23,7 @@
     <section class="shop spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3">
-                    {% include 'layouts/sidebar.html' %}
-                </div>
-                <div class="col-lg-9">
+                <div class="col-lg-12">
                     <div class="shop__product__option">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
@@ -35,76 +32,45 @@
                                         of {{ page_obj.paginator.count }} results</p>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="shop__product__option__right">
-                                    <p>Sort by Price:</p>
-                                    <select onchange="addParam('sort', this.value)">
-                                        <option value="" {% if request.GET.sort == '' %}
-                                                selected
-                                        {% endif %}>-----
-                                        </option>
-                                        <option value="real_price" {% if request.GET.sort == 'real_price' %}
-                                                selected
-                                        {% endif %} >Low To High
-                                        </option>
-                                        <option value="-real_price" {% if request.GET.sort == '-real_price' %}
-                                                selected
-                                        {% endif %}>High To Low
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="row">
                         {% for object in object_list %}
-                            <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-lg-3 col-md-4 col-sm-6">
                                 <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="{{ object.main_image.url }}">
-                                        {% if object.is_new %}
+                                    <div class="product__item__pic set-bg" data-setbg="{{ object.product.main_image.url }}">
+                                        {% if object.product.is_new %}
                                             <span class="label">New</span>
                                         {% endif %}
-                                        {% if object.is_discount %}
-                                            <span class="label {% if object.is_new %}
+                                        {% if object.product.is_discount %}
+                                            <span class="label {% if object.product.is_new %}
                                     mt-4
                                     {% endif %} " style="background-color: black; color: white;">Sale</span>
                                         {% endif %}
                                         <ul class="product__hover">
-                                            {% is_wishlist request object.id as obj %}
+                                            {% is_wishlist request object.product.id as obj %}
                                             {% if request.user.is_authenticated %}
                                                 {% if obj %}
                                                     <li>
-                                                        <a href="{% url 'product:wishlist' object.id %}?path={{ request.path }}"><img
+                                                        <a href="{% url 'product:wishlist' object.product.id %}?path={{ request.path }}"><img
                                                                 src="{% static 'main/img/heart.png' %}"
                                                                 alt=""></a></li>
                                                 {% else %}
                                                     <li>
-                                                        <a href="{% url 'product:wishlist' object.id %}?path={{ request.path }}"><img
+                                                        <a href="{% url 'product:wishlist' object.product.id %}?path={{ request.path }}"><img
                                                                 src="{% static 'main/img/icon/heart.png' %}"
                                                                 alt=""></a></li>
                                                 {% endif %}
                                             {% endif %}
 
-                                            <li><a href="{% url 'product:detail' pk=object.pk %}"><img
+                                            <li><a href="{% url 'product:detail' pk=object.product.pk %}"><img
                                                     src="{% static 'main/img/icon/search.png' %}"
                                                     alt=""></a></li>
                                         </ul>
                                     </div>
                                     <div class="product__item__text">
-                                        <h6>{{ object.name }}</h6>
-
-                                        {% is_cart request object.id as value %}
-                                        {% if value %}
-                                            <a href="{% url 'product:cart' id=object.id %}?next={{ request.path }}"
-                                               class="add-cart" style="color: black;">
-                                                - Remove from cart
-                                            </a>
-                                        {% else %}
-                                            <a href="{% url 'product:cart' id=object.id %}?next={{ request.path }}"
-                                               class="add-cart">
-                                                + Add To Cart
-                                            </a>
-                                        {% endif %}
+                                        <h6>{{ object.product.name }}</h6>
+                                        <a href="#" class="add-cart">+ Add To Cart</a>
                                         <div class="rating">
                                             <i class="fa fa-star-o"></i>
                                             <i class="fa fa-star-o"></i>
@@ -112,15 +78,15 @@
                                             <i class="fa fa-star-o"></i>
                                             <i class="fa fa-star-o"></i>
                                         </div>
-                                        <h5>${% if object.is_discount %}
-                                            {{ object.real_price }}
-                                            <del class="text-secondary">${{ object.price }}</del>
+                                        <h5>${% if object.product.is_discount %}
+                                            {{ object.product.real_price }}
+                                            <del class="text-secondary">${{ object.product.price }}</del>
                                         {% else %}
-                                            {{ object.real_price }}
+                                            {{ object.product.real_price }}
                                         {% endif %}
                                         </h5>
                                         <div class="product__color__select">
-                                            {% for color in object.color.all %}
+                                            {% for color in object.product.color.all %}
                                                 <label for="pc-4" style="background-color: {{ color.code }}">
                                                     <input type="radio" id="pc-4">
                                                 </label>
@@ -129,13 +95,15 @@
                                     </div>
                                 </div>
                             </div>
+                        {% empty %}
+                            <h1>Empty</h1>
                         {% endfor %}
 
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="product__pagination">
-                                {% if not page_obj.paginator.count < 10 %}
+                                {% if not page_obj.paginator.count < 13 %}
                                     {% paginator_range paginator as p_range %}
                                     {% for page in p_range %}
 
@@ -155,30 +123,3 @@
     <!-- Shop Section End -->
 {% endblock %}
 
-{% block extra_js %}
-    <script>
-        {% get_price request as price %}
-        $(".js-range-slider").ionRangeSlider({
-            type: "double",
-            grid: true,
-            min: {{ min }},
-            max: {{ max }},
-            from: {{ price.0|default:'null' }},
-            to: {{ price.1|default:'null' }},
-            prefix: "$",
-            onFinish: function (data) {
-                addParam('price', data.from.toString() + ";" + data.to.toString())
-            }
-        });
-
-        function addParam(name, value) {
-            var param = new URLSearchParams(window.location.search)
-            if (param.has(name) && param.get(name) == value) {
-                param.delete(name)
-            } else {
-                param.set(name, value)
-            }
-            window.location.search = param.toString()
-        }
-    </script>
-{% endblock %}

@@ -1,4 +1,5 @@
-{% load static %}
+{% load static my_tags %}
+{% cart_info request as cart_info %}
 <!-- Offcanvas Menu Begin -->
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
@@ -84,13 +85,14 @@
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
                     <a href="#" class="search-switch"><img src="{% static 'main/img/icon/search.png' %}" alt=""></a>
-                    <a href="#"><img src="{% static 'main/img/icon/heart.png' %}" alt=""></a>
-                    <a href="#"><img src="{% static 'main/img/icon/cart.png' %}" alt=""> <span>0</span></a>
-                    <div class="price">$0.00</div>
-                </div>
+                    <a href="{% url 'product:wishlist_list' %}"><img src="{% static 'main/img/icon/heart.png' %}"
+                                                                     alt=""></a>
+                    <a href="{% url 'product:shopping_cart' %}"><img src="{% static 'main/img/icon/cart.png' %}" alt=""> <span>{{ cart_info.0 }}</span></a>
+                    <div class=" price">${{ cart_info.1 }}</div>
             </div>
         </div>
-        <div class="canvas__open"><i class="fa fa-bars"></i></div>
+    </div>
+    <div class="canvas__open"><i class="fa fa-bars"></i></div>
     </div>
 </header>
 <!-- Header Section End -->
