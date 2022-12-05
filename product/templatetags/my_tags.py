@@ -29,8 +29,8 @@ def paginator_range(paginator):
 
 
 @register.simple_tag
-def is_wishlist(request, id):
-    product = ProductModel.objects.get(id=id)
+def is_wishlist(request, object):
+    product = ProductModel.objects.get(id=object.id)
     return WishlistModel.objects.all().filter(user=request.user, product=product).exists()
 
 

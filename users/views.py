@@ -1,10 +1,24 @@
 from django.contrib.auth.hashers import make_password
-from django.shortcuts import render, redirect
-from .forms import RegistrationForm, LoginForm
+from django.shortcuts import render, redirect, reverse
+from .forms import RegistrationForm, LoginForm, ProfileForm
 from django.contrib.auth import login, logout, authenticate
 from django.utils.translation import gettext_lazy as _
+from django.views.generic import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import UserModel
+from .models import UserModel, ProfileModel
+
+
+class ProfileView(LoginRequiredMixin, UpdateView):
+    template_name = 'main/profile.html'
+    form_class = ProfileForm
+
+    def get_success_url(self):
+        return reverse('users:profile')
+
+    def get_object(self, queryset=None):
+        profile, created = ProfileModel.objects.get_or_create(user=self.request.user)
+        return profile
 
 
 def logout_view(request):

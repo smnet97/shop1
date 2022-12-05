@@ -70,8 +70,8 @@
                                     {% endif %} " style="background-color: black; color: white;">Sale</span>
                                         {% endif %}
                                         <ul class="product__hover">
-                                            {% is_wishlist request object.id as obj %}
                                             {% if request.user.is_authenticated %}
+                                                {% is_wishlist request object as obj %}
                                                 {% if obj %}
                                                     <li>
                                                         <a href="{% url 'product:wishlist' object.id %}?path={{ request.path }}"><img
