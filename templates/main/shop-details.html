@@ -18,61 +18,77 @@
                 <div class="row">
                     <div class="col-lg-3 col-md-3">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">
-                                    <div class="product__thumb__pic set-bg"
-                                         data-setbg="{% static 'main/img/shop-details/thumb-1.png' %}">
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">
-                                    <div class="product__thumb__pic set-bg"
-                                         data-setbg="{% static 'main/img/shop-details/thumb-2.png' %}">
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">
-                                    <div class="product__thumb__pic set-bg"
-                                         data-setbg="{% static 'main/img/shop-details/thumb-3.png' %}">
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">
-                                    <div class="product__thumb__pic set-bg"
-                                         data-setbg="{% static 'main/img/shop-details/thumb-4.png' %}">
-                                        <i class="fa fa-play"></i>
-                                    </div>
-                                </a>
-                            </li>
+                            {% if object.images.image_1 %}
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">
+                                        <div class="product__thumb__pic set-bg"
+                                             data-setbg="{{ object.images.image_1.url }}">
+                                        </div>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if object.images.image_2 %}
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">
+                                        <div class="product__thumb__pic set-bg"
+                                             data-setbg="{{ object.images.image_2.url }}">
+                                        </div>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if object.images.image_3 %}
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">
+                                        <div class="product__thumb__pic set-bg"
+                                             data-setbg="{{ object.images.image_3.url }}">
+                                        </div>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if object.images.image_4 %}
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">
+                                        <div class="product__thumb__pic set-bg"
+                                             data-setbg="{{ object.images.image_4.url }}">
+                                            <i class="fa fa-play"></i>
+                                        </div>
+                                    </a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </div>
                     <div class="col-lg-6 col-md-9">
                         <div class="tab-content">
-                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                                <div class="product__details__pic__item">
-                                    <img src="{% static 'main/img/shop-details/product-big-2.png' %}" alt="">
+                            {% if object.images.image_1 %}
+                                <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                                    <div class="product__details__pic__item">
+                                        <img src="{{ object.images.image_1.url }}" alt="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane" id="tabs-2" role="tabpanel">
-                                <div class="product__details__pic__item">
-                                    <img src="{% static 'main/img/shop-details/product-big-3.png' %}" alt="">
+                            {% endif %}
+                            {% if object.images.image_2 %}
+
+                                <div class="tab-pane" id="tabs-2" role="tabpanel">
+                                    <div class="product__details__pic__item">
+                                        <img src="{{ object.images.image_2.url }}" alt="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane" id="tabs-3" role="tabpanel">
-                                <div class="product__details__pic__item">
-                                    <img src="{% static 'main/img/shop-details/product-big.png' %}" alt="">
+                            {% endif %}
+                            {% if object.images.image_3 %}
+                                <div class="tab-pane" id="tabs-3" role="tabpanel">
+                                    <div class="product__details__pic__item">
+                                        <img src="{{ object.images.image_3.url }}" alt="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane" id="tabs-4" role="tabpanel">
-                                <div class="product__details__pic__item">
-                                    <img src="{% static 'main/img/shop-details/product-big-4.png' %}" alt="">
-                                    <a href="https://www.youtube.com/watch?v=8PJ3_p7VqHw&list=RD8PJ3_p7VqHw&start_radio=1"
-                                       class="video-popup"><i class="fa fa-play"></i></a>
+                            {% endif %}
+                            {% if object.images.image_4 %}
+                                <div class="tab-pane" id="tabs-4" role="tabpanel">
+                                    <div class="product__details__pic__item">
+                                        <img src="{{ object.images.image_4.url }}" alt="">
+                                    </div>
                                 </div>
-                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

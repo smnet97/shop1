@@ -1,5 +1,6 @@
 from django.db import models
 from product.models import ProductModel
+from users.models import UserModel
 
 
 class OrderModel(models.Model):
@@ -15,6 +16,8 @@ class OrderModel(models.Model):
     email = models.EmailField()
     products = models.ManyToManyField(ProductModel, related_name='order')
     total_price = models.FloatField()
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='orders')
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

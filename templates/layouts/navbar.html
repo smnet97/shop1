@@ -1,4 +1,4 @@
-{% load static my_tags %}
+{% load static my_tags i18n %}
 {% cart_info request as cart_info %}
 <!-- Offcanvas Menu Begin -->
 <div class="offcanvas-menu-overlay"></div>
@@ -46,6 +46,7 @@
                             {% if request.user.is_authenticated %}
                                 <a href="{% url 'users:logout' %}">Log out</a>
                                 <a href="{% url 'users:profile' %}">Profile</a>
+                                <a href="{% url 'order:history' %}">Order history</a>
                                 <a href="#">{{ request.user }}</a>
                             {% else %}
                                 <a href="{% url 'users:login' %}">Sign in</a>
@@ -53,11 +54,19 @@
 
                         </div>
                         <div class="header__top__hover">
-                            <span>Usd <i class="arrow_carrot-down"></i></span>
+                            <span>{% get_current_language as lan %}{{ lan }} <i class="arrow_carrot-down"></i></span>
                             <ul>
-                                <li>USD</li>
-                                <li>EUR</li>
-                                <li>USD</li>
+                                {% get_available_languages as languages %}
+                                {% for language in languages %}
+                                    <li style="{% if language.0 == lan %}
+                                        background-color: black; width: 100%;
+                                    {% endif %} "><a href="/{{ language.0 }}/{{ request.path|slice:'4:' }}"
+                                                     style="{% if language.0 == lan %}
+                                                         color: white;
+                                                     {% else %}
+                                                         color: black;
+                                                     {% endif %} ">{{ language.1 }}</a></li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -75,11 +84,26 @@
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li class="active"><a href="{% url 'main:home' %}">Home</a></li>
-                        <li><a href="{% url 'product:shop' %}">Shop</a></li>
-                        <li class=""><a href="{% url 'blog:blog-list' %}">Blog</a></li>
-                        <li><a href="{% url 'main:about-us' %}">About us</a></li>
-                        <li><a href="{% url 'main:contact' %}">Contacts</a></li>
+                        {% url 'main:home' as path %}
+                        <li class="{% if path == request.path %}
+                        active
+                        {% endif %} "><a href="{% url 'main:home' %}">Home</a></li>
+                        {% url 'product:shop' as path %}
+                        <li class="{% if path == request.path %}
+                        active
+                        {% endif %} "><a href="{% url 'product:shop' %}">Shop</a></li>
+                        {% url 'blog:blog-list' as path %}
+                        <li class="{% if path == request.path %}
+                        active
+                        {% endif %} "><a href="{% url 'blog:blog-list' %}">Blog</a></li>
+                        {% url 'main:about-us' as path %}
+                        <li class="{% if path == request.path %}
+                        active
+                        {% endif %} "><a href="{% url 'main:about-us' %}">About us</a></li>
+                        {% url 'main:contact' as path %}
+                        <li class="{% if path == request.path %}
+                        active
+                        {% endif %} "><a href="{% url 'main:contact' %}">Contacts</a></li>
                     </ul>
                 </nav>
             </div>
@@ -88,12 +112,13 @@
                     <a href="#" class="search-switch"><img src="{% static 'main/img/icon/search.png' %}" alt=""></a>
                     <a href="{% url 'product:wishlist_list' %}"><img src="{% static 'main/img/icon/heart.png' %}"
                                                                      alt=""></a>
-                    <a href="{% url 'product:shopping_cart' %}"><img src="{% static 'main/img/icon/cart.png' %}" alt=""> <span>{{ cart_info.0 }}</span></a>
+                    <a href="{% url 'product:shopping_cart' %}"><img src="{% static 'main/img/icon/cart.png' %}" alt="">
+                        <span>{{ cart_info.0 }}</span></a>
                     <div class=" price">${{ cart_info.1 }}</div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        <div class="canvas__open"><i class="fa fa-bars"></i></div>
     </div>
 </header>
 <!-- Header Section End -->

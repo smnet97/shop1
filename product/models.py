@@ -121,3 +121,17 @@ class WishlistModel(models.Model):
         verbose_name = _('wishlist')
         verbose_name_plural = _('wishlists')
         unique_together = ('user', 'product')
+
+
+class ProductImagesModel(models.Model):
+    product = models.OneToOneField(ProductModel, on_delete=models.CASCADE, related_name='images')
+    image_1 = models.ImageField(upload_to='product_images/')
+    image_2 = models.ImageField(upload_to='product_images/', null=True, blank=True)
+    image_3 = models.ImageField(upload_to='product_images/', null=True, blank=True)
+    image_4 = models.ImageField(upload_to='product_images/', null=True, blank=True)
+    image_5 = models.FileField(upload_to='product_files/', null=True, blank=True)
+
+
+    class Meta:
+        verbose_name = 'image'
+        verbose_name_plural = 'images'

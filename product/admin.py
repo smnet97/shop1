@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from .forms import AddColorForm
-from .models import ProductModel, TagModel, ColorModel, SizeModel, CategoryModel, BrandModel
+from .models import ProductModel, TagModel, ColorModel, SizeModel, CategoryModel, BrandModel, ProductImagesModel
 
 
 @admin.register(ProductModel)
@@ -28,3 +28,4 @@ admin.site.register(BrandModel)
 admin.site.register(SizeModel)
 admin.site.register(CategoryModel)
 admin.site.register(TagModel)
+admin.site.register(ProductImagesModel)
